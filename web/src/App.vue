@@ -20,11 +20,11 @@ export default {
     }
   },
   created () {
-    // let token = localStorage.getItem('stat-token') || null
-    // console.log(token)
-    // if (!token) {
-    //   return this.$router.replace('/stat')
-    // }
+    let token = localStorage.getItem('stat-token') || null
+    console.log(token)
+    if (!token) {
+      return this.$router.replace('/stat')
+    }
     return this.$router.replace('/stat')
   }
 }

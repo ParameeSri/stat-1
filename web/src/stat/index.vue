@@ -25,13 +25,8 @@
             :data   = "tableDataSimple"
             :fields = "json_fields"
             name    = "filename.xls">
-        
             Download Excel
-        
         </download-excel>
-        <!-- <button  class="button is-info" @click="doExport">
-          <span>export</span>
-        </button> -->
     </section>
 </template>
 

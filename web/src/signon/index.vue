@@ -35,8 +35,8 @@
       return {
         listMenu: ['login','register'],
         form: {
-          userName: 'adminae',
-          password: 'passwordae'
+          userName: '',
+          password: ''
         },
         token: '',
         strLogin: ''

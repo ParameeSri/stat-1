@@ -3,10 +3,13 @@
 import Vue from 'vue'
 import App from './App'
 import router from './router'
+import Buefy from 'buefy'
 
 Vue.config.productionTip = false
 
 /* eslint-disable no-new */
+Vue.use(Buefy)
+
 new Vue({
   el: '#app',
   router,

@@ -1,13 +1,32 @@
 <template>
   <div id="app">
-    <img src="./assets/logo.png">
+    <navbar/>
     <router-view/>
   </div>
 </template>
 
 <script>
+import 'buefy/dist/buefy.css'
+import Navbar from  './components/Navbar.vue'
+
 export default {
-  name: 'App'
+  name: 'App',
+  components: {
+    'navbar': Navbar
+  },
+  data () {
+    return {
+
+    }
+  },
+  created () {
+    // let token = localStorage.getItem('stat-token') || null
+    // console.log(token)
+    // if (!token) {
+    //   return this.$router.replace('/stat')
+    // }
+    return this.$router.replace('/stat')
+  }
 }
 </script>
 

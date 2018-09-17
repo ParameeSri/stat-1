@@ -1,5 +1,5 @@
 <template>
-    <div class="container">
+    <div class="container mainSingon">
       <div class="columns is-centered">
         <section>
             <article class="card is-rounded">

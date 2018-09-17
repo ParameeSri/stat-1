@@ -1,64 +1,81 @@
 <template>
-    <section>
-        <b-field grouped group-multiline>
-            <div v-for="(column, index) in columnsTemplate" 
-                :key="index"
-                class="control">
-                <b-checkbox v-model="column.visible">
-                    {{ column.title }}
-                </b-checkbox>
-            </div>
-        </b-field>
-
-        <b-table :data="tableDataSimple">
+    <div class="box">
+            <b-table
+            :data="tableDataSimple"
+            paginated
+            per-page="10"
+            :opened-detailed="defaultOpenedDetails"
+            detailed
+            detail-key="id"
+            @details-open="(row, index) => $toast.open(`Expanded ${row.firstName}`)"
+        >
             <template slot-scope="props">
-                <b-table-column v-for="(column, index) in columnsTemplate"
-                    :key="index"
-                    :label="column.title"
-                    :visible="column.visible">
-                    {{ props.row[column.field] }}
+                <b-table-column field="Id" label="ID" width="40" numeric>
+                    {{ props.row.Id }}
+                </b-table-column>
+    
+                <b-table-column field="firstName" label="First Name" sortable>
+                    {{ props.row.firstName }}
+                </b-table-column>
+    
+                <b-table-column field="lastName" label="Last Name" sortable>
+                    {{ props.row.lastName }}
+                </b-table-column>
+    
+                <b-table-column field="createDate" label="Date" sortable centered>
+                    <span class="tag is-success">
+                        {{ new Date(props.row.createDate).toLocaleDateString() }}
+                    </span>
+                </b-table-column>
+    
+                <b-table-column label="edit">
+                    <a class="button is-primary is-outlined is-rounded" @click="handleClick(props.row)"> manage </a>
                 </b-table-column>
             </template>
         </b-table>
-        <download-excel
-            class   = "button is-info"
-            :data   = "tableDataSimple"
-            :fields = "json_fields"
-            name    = "filename.xls">
-            Download Excel
-        </download-excel>
-    </section>
+        <OpenDetail :cmodal="pcmodal" :hideDetail="hideDetail" :detail="detail"/>
+    </div>
 </template>
 
 <script>
-import downloadExcel from 'vue-json-excel'
+import OpenDetail from '../components/stat/OpenDetail.vue'
+
 export default {
   components: {
-    downloadExcel
+    OpenDetail
   },
   data() {
-      const tableDataSimple = [
-          { 'id': 1, 'first_name': 'Jesse', 'last_name': 'Simmons', 'date': '2016-10-15 13:43:27', 'gender': 'Male' },
-          { 'id': 2, 'first_name': 'John', 'last_name': 'Jacobs', 'date': '2016-12-15 06:00:53', 'gender': 'Male' },
-          { 'id': 3, 'first_name': 'Tina', 'last_name': 'Gilbert', 'date': '2016-04-26 06:26:28', 'gender': 'Female' },
-          { 'id': 4, 'first_name': 'Clarence', 'last_name': 'Flores', 'date': '2016-04-10 10:28:46', 'gender': 'Male' },
-          { 'id': 5, 'first_name': 'Anne', 'last_name': 'Lee', 'date': '2016-12-06 14:38:38', 'gender': 'Female' }
-      ]
-
+      let tableDataSimple = []
       return {
-          tableDataSimple,
-          columnsTemplate: [
-              { title: 'ID', field: 'id', visible: true },
-              { title: 'First Name', field: 'first_name', visible: true },
-              { title: 'Last Name', field: 'last_name', visible: true },
-              { title: 'Date', field: 'date', visible: true },
-              { title: 'Gender', field: 'gender', visible: true }
-          ]
+        defaultOpenedDetails: [1],
+        tableDataSimple,
+        columnsTemplate: [
+            { title: 'id', field: 'Id', visible: true },
+            { title: 'First Name', field: 'firstName', visible: true },
+            { title: 'Last Name', field: 'lastName', visible: true },
+            { title: 'Date', field: 'createDate', visible: true },
+            { title: 'role', field: 'role', visible: true },
+            { title: 'edit', field: 'edit', visible: true }
+        ],
+        pcmodal: 'modal'
+      }
+  },
+  async created () {
+      let { body } = await this.$http.get('users')
+      let { data } = body.Status.data
+      if (body.Status.code === '200') {
+        this.tableDataSimple = data
       }
   },
   methods: {
-    doExport () {
+    handleClick(obj) {
+      console.log(obj)
+      this.detail = obj
+      this.pcmodal = `modal is-active`
       
+    },
+    hideDetail() {
+      this.pcmodal = `modal`
     }
   }
 }

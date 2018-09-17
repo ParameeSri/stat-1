@@ -21,9 +21,8 @@ export default {
   },
   created () {
     let token = localStorage.getItem('stat-token') || null
-    console.log(token)
     if (!token) {
-      return this.$router.replace('/stat')
+      return this.$router.replace('/signon')
     }
     return this.$router.replace('/stat')
   }
@@ -38,5 +37,14 @@ export default {
   text-align: center;
   color: #2c3e50;
   margin-top: 60px;
+}
+.box {
+  margin-top: 2cm;
+  margin-left: 2cm;
+  margin-right: 2cm;
+  margin-bottom: 2cm;
+}
+.mainSingon {
+  margin-top: 5cm;
 }
 </style>
